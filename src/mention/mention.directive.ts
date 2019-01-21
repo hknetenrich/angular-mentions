@@ -27,7 +27,6 @@ const KEY_2 = 50;
   selector: '[mention], [mentionConfig]',
   host: {
     '(textInput)': 'keyHandler($event)',
-    '(keydown)': 'keyHandler($event)',
     '(blur)': 'blurHandler($event)'
   }
 })
@@ -159,7 +158,7 @@ export class MentionDirective implements OnChanges {
     let pos = getCaretPosition(nativeElement, this.iframe);
     let charPressed = event.key || event.data;
     if (!charPressed) {
-      let charCode = event.which || event.keyCode;
+      let charCode = event.type === 'textInput' ? event.data.charCodeAt(0) : event.which || event.key;
       if (!event.shiftKey && (charCode >= 65 && charCode <= 90)) {
         charPressed = String.fromCharCode(charCode + 32);
       }
